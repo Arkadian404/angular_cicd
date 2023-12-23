@@ -51,3 +51,25 @@ jobs:
     - name: Test
       run: |
           npm run test:ci
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker Image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        dockerfile: Dockerfile
+        push: false
+        tags: zafuog/angualar-cicd:latest
+
+    - name: Push Docker Image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        dockerfile: Dockerfile
+        push: true
+        tags: zafuog/angular-cicd:latest
+
